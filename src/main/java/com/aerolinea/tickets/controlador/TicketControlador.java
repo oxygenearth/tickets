@@ -38,6 +38,9 @@ public class TicketControlador {
         LocalDate parsedReturnDate = LocalDate.parse(returnDate);
         TicketType tripType = null;
 
+        /**
+         * Re estructurar bloque de if.
+         */
         if("soloida".equals(ticketType)) {
             if(parsedDepartureDate == null) {
                 logger.info("parsedDepartureDate = null");
