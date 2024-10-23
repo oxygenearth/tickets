@@ -30,6 +30,9 @@ public class TicketControlador {
      * tripType debe colocarse a TicketType.ONE_WAY_TRIP
      * si el usuario elige ida y vuelta, deben estar llenos los dos, sino estan llenos los dos, se envía un Bad_request
      * el tripType debe colocarse a TicketType.ROUND_TRIP
+     * Ejemplo de instruccion idayvuelta:
+     * http://localhost:8080/api/tickets/generar?ticketType=idayvuelta&origin=KTS&destination=TXS&departureDate=2024-09-03&returnDate=2027-09-03
+     * El llamado al servicio se hace desde postman, curl o un formulario html
      */
     @PostMapping("/generar")
     public ResponseEntity<Ticket> generateTicket(@RequestParam String ticketType, @RequestParam String origin, @RequestParam String destination,
@@ -60,16 +63,22 @@ public class TicketControlador {
             }
         }
 
-        Ticket ticket = Ticket.builder()
-                .ticketType(tripType)
-                .origin(origin)
-                .destination(destination)
-                .departureDate(LocalDate.parse(departureDate))
-                .returnDate(parsedReturnDate)
-                .build();
+        if(tripType != null) {
+            //has been selected either soloida or idayvuelta so we can build an object.
+            Ticket ticket = Ticket.builder()
+                    .ticketType(tripType)
+                    .origin(origin)
+                    .destination(destination)
+                    .departureDate(parsedDepartureDate)
+                    .returnDate(parsedReturnDate)
+                    .build();
 
-        Ticket savedTicket = iTicketServices.saveTicket(ticket);
-        return ResponseEntity.status(201).body(savedTicket);
+            Ticket savedTicket = iTicketServices.saveTicket(ticket);
+            return ResponseEntity.status(201).body(savedTicket);
+        }
+
+        //Response in case there is no data to process
+        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(null);
 
     }
 }
