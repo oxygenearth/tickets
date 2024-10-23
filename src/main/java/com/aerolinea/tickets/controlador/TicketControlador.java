@@ -25,9 +25,10 @@ public class TicketControlador {
     ITicketServices iTicketServices;
 
     /**
-     * si el usuario elige solo ida, debe estar lleno el departureDate y returnDate no se tiene en cuenta y se pone a nulo
+     * si el usuario elige solo ida, debe estar lleno el departureDate y en cuanto al returnDate no se tiene en cuenta
+     * y se pone a nulo.
      * tripType debe colocarse a TicketType.ONE_WAY_TRIP
-     * si el usuario elige ida y vuelta, deben estar llenos los dos, sino estan llenos los dos, se manda el Bad_request
+     * si el usuario elige ida y vuelta, deben estar llenos los dos, sino estan llenos los dos, se envía un Bad_request
      * el tripType debe colocarse a TicketType.ROUND_TRIP
      */
     @PostMapping("/generar")
